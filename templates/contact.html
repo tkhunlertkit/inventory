@@ -1,0 +1,40 @@
+<head>
+    <title>Turtle?!</title>
+    <script type="text/javascript" src="/static/contact.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/contact.css" />
+</head>
+<body>
+    <h1>Customer</h1>
+    <form id="form" action="http://jkorpela.fi/cgi-bin/echo.cgi" method="POST">
+        <table>
+            <tr>
+                <td>Order #</td>
+                <td>
+                    <select>
+                        {%for v in order_number %}
+                        <option value="{{v}}">{{v}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td><input type="text" placeholder="username" id="username" /></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" placeholder="name" id="name" /></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <textarea id="address" placeholder="Address"></textarea>
+                </td>
+            </tr>
+        </table>
+        <!-- JS will insert items here -->
+        <h2>Items</h2>
+        <input type="submit" value="Submit" />
+        <a href="javascript:void(0);" id="new">[+]</a>
+    </form>
+</body>

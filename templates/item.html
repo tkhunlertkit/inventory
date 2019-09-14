@@ -1,0 +1,71 @@
+<head>
+    <title>Turtle?!</title>
+    <link rel="stylesheet" type="text/css" href="/static/contact.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/contact.js"></script>
+    <script>
+        // Setup when page loads
+        function setup() {
+            // get today's date
+            var today = new Date();
+            document.getElementById("date").value = today.getFullYear() + '-'
+                + ('0' + (today.getMonth() + 1)).slice(-2) + '-'
+                + ('0' + today.getDate()).slice(-2);
+
+            // Bind "validateEmails()" to "form" submission
+            var form = document.getElementById("form");
+            form.addEventListener("submit", function(event){
+                event.preventDefault();
+                var itemNumbers = getInputs("itemNumber");
+                var quantities = getInputs("quantity");
+                var priceDollars = getInputs("priceDollar");
+                var priceBahts = getInputs("priceBaht");
+                aggItems = [];
+                for (var i=0; i<itemNumbers.length; i++) {
+                    aggItems.push({
+                        itemNumber: itemNumbers[i],
+                        quantity: quantities[i],
+                        priceDollar: priceDollars[i],
+                        priceBaht: priceBahts[i]
+                    });
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5000/api/v1.0/item",
+                    contentType: "application/json",
+                    data: JSON.stringify(aggItems),
+                }).done(function(data) {
+                    console.log("Success");
+                    console.log(data);
+                }).fail(function(error) {
+                    console.log("Error");
+                    console.log(error);
+                });
+                console.log(JSON.stringify(aggItems));
+            });
+
+            // Bind "new" to makeNew when clicked.
+            var newLink = document.getElementById("newItem");
+            newLink.addEventListener("click", makeNewItemInventory);
+            makeNewItemInventory();
+        }
+
+        // Call setup when page loads.
+        window.addEventListener("load", setup);
+    </script>
+</head>
+<body>
+    <h1>Customer</h1>
+    <form id="form" action="http://jkorpela.fi/cgi-bin/echo.cgi" method="POST">
+        <table>
+            <tr>
+                <td>Date</td>
+                <td><input type="date" name="date" id="date"/></td>
+            </tr>
+        </table>
+        <!-- JS will insert items here -->
+        <h2>Items</h2>
+        <input type="submit" value="Submit" />
+        <a href="javascript:void(0);" id="newItem">[+]</a>
+    </form>
+</body>
